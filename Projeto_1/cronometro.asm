@@ -1,14 +1,35 @@
 org 0h
 
-main:
-	MOV R0, #9
-	
-main_loop:
-	LCALL out_7seg
-	DJNZ R0, main_loop
-	LCALL out_7seg
-	LJMP main
+jmp main
 
+org 0Bh
+
+jmp handle_timer0_int
+
+org 32h
+
+main:
+	; rodar timer 0 em modo 1
+	MOV TMOD, #00000001b
+	; iniciar timer 0
+	MOV TCON, #00010000b
+	; habilitar interrupsores
+	; e habilitar interrupsor timer 0
+	MOV IE, #10000010b
+
+	MOV R0, #9
+main_loop:
+	LJMP main_loop
+
+
+handle_timer0_int:
+	DJNZ R0, print_without_rst
+	LCALL out_7seg
+	MOV R0, #9
+	RETI
+print_without_rst:
+	LCALL out_7seg
+	RETI
 
 ; aceita numero de 0 a 9 a ser impresso
 ; no registrador R0
