@@ -18,17 +18,43 @@ main:
 	MOV IE, #10000010b
 
 	MOV R0, #9
+	MOV R7, #3	
+	MOV R6, #0
+
+
 main_loop:
 	LJMP main_loop
 
 
 handle_timer0_int:
-	DJNZ R0, print_without_rst
-	LCALL out_7seg
-	MOV R0, #9
+	DJNZ R7, r7_not_0
+	;bellow executes if R7 = 0	
+
+	PUSH ACC ;save ACC to stack
+	MOV A, R6
+	JNZ remainder_handled
+
+	MOV TH0, #02Fh
+	MOV TL0, #08Fh
+	MOV R7, #1
+	MOV R6, #1
+
+	POP ACC
+
 	RETI
-print_without_rst:
-	LCALL out_7seg
+
+remainder_handled:
+	MOV R6, #0
+	MOV R7, #3
+
+	; do some actual stuff here!!
+	NOP
+
+	POP ACC
+	RETI
+
+	
+r7_not_0:
 	RETI
 
 ; aceita numero de 0 a 9 a ser impresso
