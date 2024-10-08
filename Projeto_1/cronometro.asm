@@ -17,14 +17,48 @@ main:
 	; e habilitar interrupsor timer 0
 	MOV IE, #10000010b
 
-	MOV R0, #9
+	MOV R0, #0
+	MOV R1, #4
 	MOV R7, #3	
 	MOV R6, #0
-
 
 main_loop:
 	LJMP main_loop
 
+increment_and_print:
+	INC R0
+
+	CJNE R0, #0Ah, not_exceded
+	MOV R0, #0
+	not_exceded:
+
+
+	ACALL out_7seg
+	
+	RET
+
+pulse_accordingly:
+	;if P2.0 on
+	JB P2.0, else_if
+	
+	ACALL increment_and_print
+
+	RET
+	else_if:
+	;else if P2.1 on
+	JB P2.1, else
+	;only increment and print if r1 = 0
+	DJNZ R1, r1_not_0
+	
+	MOV R1, #4
+	ACALL increment_and_print
+	
+	r1_not_0:
+	RET
+	else:
+	;else
+
+	RET
 
 handle_timer0_int:
 	DJNZ R7, r7_not_0
@@ -35,7 +69,7 @@ handle_timer0_int:
 	JNZ remainder_handled
 
 	MOV TH0, #02Fh
-	MOV TL0, #08Fh
+	MOV TL0, #07Eh
 	MOV R7, #1
 	MOV R6, #1
 
@@ -48,7 +82,7 @@ remainder_handled:
 	MOV R7, #3
 
 	; do some actual stuff here!!
-	NOP
+	ACALL pulse_accordingly
 
 	POP ACC
 	RETI
