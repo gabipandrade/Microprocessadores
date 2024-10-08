@@ -80,7 +80,7 @@ pulse_accordingly:
 ; Como ocorre interrupsor do valor de clock no overflow do valor 65535 para 0,
 ; ocorre delay de apenas 65,536 ms entre interrupcoes. A fim de esperar 0,25 s
 ; entre chamadas da funcao pulse_accordingly, e necessario esperar 250000 ciclos
-; de maquina, o que significa 3 interrupcoes de clocock + 53392 pulsos
+; de maquina, o que significa 3 interrupcoes de clock + 53392 pulsos
 handle_timer0_int:
 	; decrementar r7 e encerrar caso nao seja 0 
 	DJNZ R7, r7_not_0
