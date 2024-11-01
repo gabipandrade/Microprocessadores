@@ -1,1 +1,7 @@
+configinterrupt
+configmcu
+configtimer
+interrupcao_high
 main
+tmr0h_preset
+tmr0l_preset
