@@ -1,7 +1,10 @@
 configinterrupt
 configmcu
 configtimer
+displaynum
+incrementuntil9
 interrupcao_high
 main
+out7seg
 tmr0h_preset
 tmr0l_preset

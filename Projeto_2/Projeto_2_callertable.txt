@@ -4,3 +4,5 @@ main
 	configTimer
 	configInterrupt
 INTERRUPCAO_HIGH
+	incrementUntil9
+	out7Seg
