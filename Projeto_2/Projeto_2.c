@@ -18,15 +18,15 @@ void out7Seg(unsigned char n)
   switch (n)
   {      // acionamento do display de 7 segmentos do kit EasyPIC (PORTD)
     case 0:{ latd = 0b00111111; break;}   // 0 no display de 7seg.
-    case 1:{ latd = 0b10000110; break;}   // 1 no display de 7seg.
+    case 1:{ latd = 0b00000110; break;}   // 1 no display de 7seg.
     case 2:{ latd = 0b01011011; break;}   // 2 no display de 7seg.
-    case 3:{ latd = 0b11001111; break;}   // 3 no display de 7seg.
+    case 3:{ latd = 0b01001111; break;}   // 3 no display de 7seg.
     case 4:{ latd = 0b01100110; break;}   // 4 no display de 7seg.
-    case 5:{ latd = 0b11101101; break;}   // 5 no display de 7seg.
+    case 5:{ latd = 0b01101101; break;}   // 5 no display de 7seg.
     case 6:{ latd = 0b01111101; break;}   // 6 no display de 7seg.
-    case 7:{ latd = 0b10000111; break;}   // 7 no display de 7seg.
+    case 7:{ latd = 0b00000111; break;}   // 7 no display de 7seg.
     case 8:{ latd = 0b01111111; break;}   // 8 no display de 7seg.
-    case 9:{ latd = 0b11101111; break;}   // 9 no display de 7seg.
+    case 9:{ latd = 0b01101111; break;}   // 9 no display de 7seg.
     default:{ latd = 0b00000000; break;} // entrada inválida, apagar display
   }
 
@@ -46,8 +46,8 @@ void INTERRUPCAO_HIGH() iv 0x0008 ics ICS_AUTO {
     out7Seg(displayNum);
     incrementUntil9(&displayNum);
 
-    TMR0H += TMR0H_preset;
-    TMR0L += TMR0L_preset;
+    TMR0H = TMR0H_preset;
+    TMR0L = TMR0L_preset;
     INTCON.TMR0IF = 0;   //Não esquecer de zerar a Flag
   }
 
@@ -78,6 +78,9 @@ void configInterrupt(){
   INTCON.INT0IE = 1; //Habilita a interrupção específica INT0
   INTCON3.INT1IP = 1; // Interrupcão INT1 em alta prioridade
   INTCON3.INT1IE = 1; //Habilita a interrupção específica INT1
+
+  INTCON2.INTEDG0 = 1; //Borda de descida
+  INTCON2.INTEDG1 = 1; //Borda de descida
 }
 
 void configMCU()
@@ -87,6 +90,9 @@ void configMCU()
   // Config. das portas
   TRISD = 0;    // PORTD como saída  (usar LED)
   PORTD = 0;    // LED inicialmente OFF
+  
+  TRISA = 0X00; // PORTA como saida (ligar display)
+  PORTA = 0x0F; // PORTA 0, 1, 2 e 3 ligados para ligar o display no kit EasyPic
   
   TRISB = 0xFF; // PORTB como entradas
 }

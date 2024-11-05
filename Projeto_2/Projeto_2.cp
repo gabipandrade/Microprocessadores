@@ -1,4 +1,4 @@
-#line 1 "C:/Users/eugom/OneDrive/Documentos/MICROCONTROLADORES/SEL0614/Projeto_2/Projeto_2.c"
+#line 1 "C:/Users/13839069/Desktop/SEL0614/Projeto_2/Projeto_2.c"
 unsigned char TMR0H_preset = 0xFF;
 unsigned char TMR0L_preset = 0x00;
 
@@ -19,15 +19,15 @@ void out7Seg(unsigned char n)
  switch (n)
  {
  case 0:{ latd = 0b00111111; break;}
- case 1:{ latd = 0b10000110; break;}
+ case 1:{ latd = 0b00000110; break;}
  case 2:{ latd = 0b01011011; break;}
- case 3:{ latd = 0b11001111; break;}
+ case 3:{ latd = 0b01001111; break;}
  case 4:{ latd = 0b01100110; break;}
- case 5:{ latd = 0b11101101; break;}
+ case 5:{ latd = 0b01101101; break;}
  case 6:{ latd = 0b01111101; break;}
- case 7:{ latd = 0b10000111; break;}
+ case 7:{ latd = 0b00000111; break;}
  case 8:{ latd = 0b01111111; break;}
- case 9:{ latd = 0b11101111; break;}
+ case 9:{ latd = 0b01101111; break;}
  default:{ latd = 0b00000000; break;}
  }
 
@@ -47,8 +47,8 @@ void INTERRUPCAO_HIGH() iv 0x0008 ics ICS_AUTO {
  out7Seg(displayNum);
  incrementUntil9(&displayNum);
 
- TMR0H += TMR0H_preset;
- TMR0L += TMR0L_preset;
+ TMR0H = TMR0H_preset;
+ TMR0L = TMR0L_preset;
  INTCON.TMR0IF = 0;
  }
 
@@ -79,6 +79,9 @@ void configInterrupt(){
  INTCON.INT0IE = 1;
  INTCON3.INT1IP = 1;
  INTCON3.INT1IE = 1;
+
+ INTCON2.INTEDG0 = 1;
+ INTCON2.INTEDG1 = 1;
 }
 
 void configMCU()
@@ -88,6 +91,9 @@ void configMCU()
 
  TRISD = 0;
  PORTD = 0;
+
+ TRISA = 0X00;
+ PORTA = 0x0F;
 
  TRISB = 0xFF;
 }

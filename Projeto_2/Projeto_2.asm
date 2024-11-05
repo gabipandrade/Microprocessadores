@@ -36,9 +36,9 @@ L_out7Seg3:
 	MOVLW       63
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
-;Projeto_2.c,21 :: 		case 1:{ latd = 0b10000110; break;}   // 1 no display de 7seg.
+;Projeto_2.c,21 :: 		case 1:{ latd = 0b00000110; break;}   // 1 no display de 7seg.
 L_out7Seg4:
-	MOVLW       134
+	MOVLW       6
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
 ;Projeto_2.c,22 :: 		case 2:{ latd = 0b01011011; break;}   // 2 no display de 7seg.
@@ -46,9 +46,9 @@ L_out7Seg5:
 	MOVLW       91
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
-;Projeto_2.c,23 :: 		case 3:{ latd = 0b11001111; break;}   // 3 no display de 7seg.
+;Projeto_2.c,23 :: 		case 3:{ latd = 0b01001111; break;}   // 3 no display de 7seg.
 L_out7Seg6:
-	MOVLW       207
+	MOVLW       79
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
 ;Projeto_2.c,24 :: 		case 4:{ latd = 0b01100110; break;}   // 4 no display de 7seg.
@@ -56,9 +56,9 @@ L_out7Seg7:
 	MOVLW       102
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
-;Projeto_2.c,25 :: 		case 5:{ latd = 0b11101101; break;}   // 5 no display de 7seg.
+;Projeto_2.c,25 :: 		case 5:{ latd = 0b01101101; break;}   // 5 no display de 7seg.
 L_out7Seg8:
-	MOVLW       237
+	MOVLW       109
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
 ;Projeto_2.c,26 :: 		case 6:{ latd = 0b01111101; break;}   // 6 no display de 7seg.
@@ -66,9 +66,9 @@ L_out7Seg9:
 	MOVLW       125
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
-;Projeto_2.c,27 :: 		case 7:{ latd = 0b10000111; break;}   // 7 no display de 7seg.
+;Projeto_2.c,27 :: 		case 7:{ latd = 0b00000111; break;}   // 7 no display de 7seg.
 L_out7Seg10:
-	MOVLW       135
+	MOVLW       7
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
 ;Projeto_2.c,28 :: 		case 8:{ latd = 0b01111111; break;}   // 8 no display de 7seg.
@@ -76,9 +76,9 @@ L_out7Seg11:
 	MOVLW       127
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
-;Projeto_2.c,29 :: 		case 9:{ latd = 0b11101111; break;}   // 9 no display de 7seg.
+;Projeto_2.c,29 :: 		case 9:{ latd = 0b01101111; break;}   // 9 no display de 7seg.
 L_out7Seg12:
-	MOVLW       239
+	MOVLW       111
 	MOVWF       LATD+0 
 	GOTO        L_out7Seg2
 ;Projeto_2.c,30 :: 		default:{ latd = 0b00000000; break;} // entrada inválida, apagar display
@@ -150,12 +150,12 @@ _INTERRUPCAO_HIGH:
 	MOVLW       hi_addr(_displayNum+0)
 	MOVWF       FARG_incrementUntil9_n+1 
 	CALL        _incrementUntil9+0, 0
-;Projeto_2.c,49 :: 		TMR0H += TMR0H_preset;
+;Projeto_2.c,49 :: 		TMR0H = TMR0H_preset;
 	MOVF        _TMR0H_preset+0, 0 
-	ADDWF       TMR0H+0, 1 
-;Projeto_2.c,50 :: 		TMR0L += TMR0L_preset;
+	MOVWF       TMR0H+0 
+;Projeto_2.c,50 :: 		TMR0L = TMR0L_preset;
 	MOVF        _TMR0L_preset+0, 0 
-	ADDWF       TMR0L+0, 1 
+	MOVWF       TMR0L+0 
 ;Projeto_2.c,51 :: 		INTCON.TMR0IF = 0;   //Não esquecer de zerar a Flag
 	BCF         INTCON+0, 2 
 ;Projeto_2.c,52 :: 		}
@@ -213,72 +213,81 @@ _configInterrupt:
 	BSF         INTCON3+0, 6 
 ;Projeto_2.c,80 :: 		INTCON3.INT1IE = 1; //Habilita a interrupção específica INT1
 	BSF         INTCON3+0, 3 
-;Projeto_2.c,81 :: 		}
+;Projeto_2.c,82 :: 		INTCON2.INTEDG0 = 1; //Borda de descida
+	BSF         INTCON2+0, 6 
+;Projeto_2.c,83 :: 		INTCON2.INTEDG1 = 1; //Borda de descida
+	BSF         INTCON2+0, 5 
+;Projeto_2.c,84 :: 		}
 L_end_configInterrupt:
 	RETURN      0
 ; end of _configInterrupt
 
 _configMCU:
 
-;Projeto_2.c,83 :: 		void configMCU()
-;Projeto_2.c,86 :: 		ADCON1 |= 0x0F;
+;Projeto_2.c,86 :: 		void configMCU()
+;Projeto_2.c,89 :: 		ADCON1 |= 0x0F;
 	MOVLW       15
 	IORWF       ADCON1+0, 1 
-;Projeto_2.c,88 :: 		TRISD = 0;    // PORTD como saída  (usar LED)
+;Projeto_2.c,91 :: 		TRISD = 0;    // PORTD como saída  (usar LED)
 	CLRF        TRISD+0 
-;Projeto_2.c,89 :: 		PORTD = 0;    // LED inicialmente OFF
+;Projeto_2.c,92 :: 		PORTD = 0;    // LED inicialmente OFF
 	CLRF        PORTD+0 
-;Projeto_2.c,91 :: 		TRISB = 0xFF; // PORTB como entradas
+;Projeto_2.c,94 :: 		TRISA = 0X00;
+	CLRF        TRISA+0 
+;Projeto_2.c,95 :: 		PORTA = 0x0F;
+	MOVLW       15
+	MOVWF       PORTA+0 
+;Projeto_2.c,97 :: 		TRISB = 0xFF; // PORTB como entradas
 	MOVLW       255
 	MOVWF       TRISB+0 
-;Projeto_2.c,92 :: 		}
+;Projeto_2.c,98 :: 		}
 L_end_configMCU:
 	RETURN      0
 ; end of _configMCU
 
 _configTimer:
 
-;Projeto_2.c,94 :: 		void configTimer(){
-;Projeto_2.c,96 :: 		T0CON.TMR0ON = 0;// Timer0 On/Off Control bit:1=Enables Timer0 / 0=Stops Timer0
+;Projeto_2.c,100 :: 		void configTimer(){
+;Projeto_2.c,102 :: 		T0CON.TMR0ON = 0;// Timer0 On/Off Control bit:1=Enables Timer0 / 0=Stops Timer0
 	BCF         T0CON+0, 7 
-;Projeto_2.c,97 :: 		T0CON.T08BIT = 0;// Timer0 8-bit/16-bit Control bit: 1=8-bit timer/counter / 0=16-bit timer/counter
+;Projeto_2.c,103 :: 		T0CON.T08BIT = 0;// Timer0 8-bit/16-bit Control bit: 1=8-bit timer/counter / 0=16-bit timer/counter
 	BCF         T0CON+0, 6 
-;Projeto_2.c,98 :: 		T0CON.T0CS   = 0;// TMR0 Clock Source Select bit: 0=Internal Clock (CLKO) / 1=Transition on T0CKI pin
+;Projeto_2.c,104 :: 		T0CON.T0CS   = 0;// TMR0 Clock Source Select bit: 0=Internal Clock (CLKO) / 1=Transition on T0CKI pin
 	BCF         T0CON+0, 5 
-;Projeto_2.c,99 :: 		T0CON.T0SE   = 0;// TMR0 Source Edge Select bit: 0=low/high / 1=high/low
+;Projeto_2.c,105 :: 		T0CON.T0SE   = 0;// TMR0 Source Edge Select bit: 0=low/high / 1=high/low
 	BCF         T0CON+0, 4 
-;Projeto_2.c,100 :: 		T0CON.PSA    = 0;// Prescaler Assignment bit: 0=Prescaler is assigned; 1=NOT assigned/bypassed
+;Projeto_2.c,106 :: 		T0CON.PSA    = 0;// Prescaler Assignment bit: 0=Prescaler is assigned; 1=NOT assigned/bypassed
 	BCF         T0CON+0, 3 
-;Projeto_2.c,101 :: 		T0CON.T0PS2  = 1;// bits 2-0  PS2:PS0: Prescaler Select bits
+;Projeto_2.c,107 :: 		T0CON.T0PS2  = 1;// bits 2-0  PS2:PS0: Prescaler Select bits
 	BSF         T0CON+0, 2 
-;Projeto_2.c,102 :: 		T0CON.T0PS1  = 0;
+;Projeto_2.c,108 :: 		T0CON.T0PS1  = 0;
 	BCF         T0CON+0, 1 
-;Projeto_2.c,103 :: 		T0CON.T0PS0  = 0;
+;Projeto_2.c,109 :: 		T0CON.T0PS0  = 0;
 	BCF         T0CON+0, 0 
-;Projeto_2.c,104 :: 		TMR0H = TMR0H_preset;    // preset for Timer0 MSB register
+;Projeto_2.c,110 :: 		TMR0H = TMR0H_preset;    // preset for Timer0 MSB register
 	MOVF        _TMR0H_preset+0, 0 
 	MOVWF       TMR0H+0 
-;Projeto_2.c,105 :: 		TMR0L = TMR0L_preset;    // preset for Timer0 LSB register
+;Projeto_2.c,111 :: 		TMR0L = TMR0L_preset;    // preset for Timer0 LSB register
 	MOVF        _TMR0L_preset+0, 0 
 	MOVWF       TMR0L+0 
-;Projeto_2.c,106 :: 		}
+;Projeto_2.c,112 :: 		}
 L_end_configTimer:
 	RETURN      0
 ; end of _configTimer
 
 _main:
 
-;Projeto_2.c,108 :: 		void main() {
-;Projeto_2.c,110 :: 		configMCU();
+;Projeto_2.c,114 :: 		void main() {
+;Projeto_2.c,116 :: 		configMCU();
 	CALL        _configMCU+0, 0
-;Projeto_2.c,111 :: 		configTIMER();
+;Projeto_2.c,117 :: 		configTIMER();
 	CALL        _configTimer+0, 0
-;Projeto_2.c,112 :: 		configInterrupt();
+;Projeto_2.c,118 :: 		configInterrupt();
 	CALL        _configInterrupt+0, 0
-;Projeto_2.c,115 :: 		while(1);
+;Projeto_2.c,121 :: 		while(1);
 L_main19:
 	GOTO        L_main19
-;Projeto_2.c,116 :: 		}
+;Projeto_2.c,122 :: 		}
 L_end_main:
 	GOTO        $+0
 ; end of _main

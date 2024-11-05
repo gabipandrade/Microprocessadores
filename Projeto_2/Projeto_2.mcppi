@@ -25,10 +25,7 @@ Count=0
 ActiveImageIndex=-1
 [OPENED_FILES]
 File0=Projeto_2.c
-File1=..\..\at7\ex2.1\Exemplo_8_Interrupt_INT0.c
-File2=..\..\at7\ex2.2\Exemplo_8_Interrupt_INT0.c
-File3=..\..\at6\teste04\teste02.c
-Count=4
+Count=1
 [EEPROM]
 Count=0
 [ACTIVE_COMMENTS_FILES]
