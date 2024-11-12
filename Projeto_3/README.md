@@ -33,7 +33,12 @@ O projeto utiliza o módulo ADC para converter a tensão lida no pino conectado 
 - **ADC**: O módulo ADC é inicializado com `ADC_Init_Advanced(_ADC_EXTERNAL_VREFH)`, configurando o Vref externo. 
 
 ### Funções Utilizadas
-- **ADC_Get_Sample(0)**: Lê o valor analógico do canal 0 e armazena em uma variável.
+- **Lcd_Init()**: Inicializa o módulo LCD, preparando-o para receber dados.
+- **Lcd_Cmd(_LCD_CLEAR)**: Limpa o display LCD, removendo qualquer texto anterior.
+- **Lcd_Cmd(_LCD_CURSOR_OFF)**: Desativa o cursor no display LCD para uma apresentação mais limpa.
+- **Lcd_Out(1,1,"ADC0:")**: Escreve o texto “ADC0:” na primeira linha, primeira coluna do display LCD, servindo como indicador para o valor de temperatura.
+- **ADC_Init_Advanced(_ADC_EXTERNAL_VREFH)**: Inicializa o módulo ADC com Vref externo, ajustando-o para o intervalo de 0 a 1V, que é adequado para a sensibilidade do LM35.
+- **ADC_Get_Sample(0)**: Lê o valor analógico do canal 0 e armazena em uma variável para conversão e exibição.
 - **Lcd_Out**: Exibe o valor formatado da temperatura no display LCD.
 
 ### Procedimentos de Teste
