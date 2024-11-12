@@ -45,7 +45,7 @@ O projeto utiliza o módulo ADC para converter a tensão lida no pino conectado 
 1. **Compilação**: Compile o código no **MikroC PRO for PIC**.
 2. **Simulação**: No **SimulIDE**, monte o circuito conforme o manual e ajuste o potenciômetro para observar a variação de temperatura no display.
 
-![Diagrama do Circuito no SimulIDE](circuito_simulide_Proj_3.jpeg)
+![Diagrama do Circuito no SimulIDE](circuito_simulide_Proj_3_1.jpeg)
 
 ## Formato de Entrega
 Os arquivos a serem entregues são:
