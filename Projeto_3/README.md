@@ -40,7 +40,7 @@ O código configura as portas de entrada e saída e inicializa o módulo ADC, aj
 1. **Compilação**: Compile o código no **MikroC PRO for PIC**.
 2. **Simulação**: No **SimulIDE**, monte o circuito conforme o manual e ajuste o potenciômetro para observar a variação no display.
 
-![Diagrama do Circuito no SimulIDE](circuito_simulide.jpeg)
+![Diagrama do Circuito no SimulIDE](circuito_simulide_Proj_3.jpeg)
 
 ## Formato de Entrega
 Os arquivos a serem entregues são:
